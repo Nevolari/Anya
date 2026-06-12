@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Anya — Happy Birthday!</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300;1,400&family=Forum&family=Tenor+Sans&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Tenor Sans',sans-serif;
+  background:#04080f;
+  color:#e8eef8;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  --bg:#04080f;
+  --bg3:#0d1526;
+  --line:rgba(100,140,220,0.08);
+  --txt:#e8eef8;
+  --muted:#5a7aaa;
+  --ocean-l:#4a7fd4;
+  --ocean-ll:#7aaae8;
+  --violet-l:#7b5ea7;
+  --violet-ll:#b39ddb;
+}
+
+#tap{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 2s cubic-bezier(0.76,0,.24,1),visibility 2s;overflow:hidden}
+#tap.out{opacity:0;visibility:hidden;pointer-events:none}
+#tap-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 15% 25%,rgba(26,58,110,0.5) 0%,transparent 55%),radial-gradient(ellipse 70% 55% at 85% 75%,rgba(61,42,122,0.4) 0%,transparent 50%),#04080f}
+.particles{position:absolute;inset:0;overflow:hidden}
+.particle{position:absolute;border-radius:50%;animation:float linear infinite;opacity:0}
+@keyframes float{0%{opacity:0;transform:translateY(100vh) scale(0)}10%{opacity:1}90%{opacity:.3}100%{opacity:0;transform:translateY(-10vh) scale(1)}}
+.tap-eyebrow{font-size:9px;letter-spacing:10px;text-transform:uppercase;color:var(--muted);margin-bottom:32px;animation:up 1.6s both}
+.tap-name{font-family:'Forum',serif;font-size:clamp(80px,18vw,160px);line-height:.85;letter-spacing:-3px;margin-bottom:14px;animation:up 1.6s .1s both;background:linear-gradient(135deg,#e8eef8 0%,var(--ocean-ll) 50%,var(--violet-ll) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.tap-italic{font-family:'Cormorant',serif;font-style:italic;font-weight:300;font-size:clamp(16px,2.8vw,22px);background:linear-gradient(110deg,var(--ocean-ll),var(--violet-ll));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:80px;animation:up 1.6s .22s both;letter-spacing:2px}
+.tap-btn{background:none;border:none;cursor:pointer;animation:up 1.6s .38s both;padding:0}
+.tap-btn-inner{display:flex;align-items:center;gap:18px;padding:16px 36px 16px 28px;border-radius:60px;border:1px solid rgba(74,127,212,0.3);background:rgba(26,58,110,0.2);backdrop-filter:blur(20px);transition:all .5s ease}
+.tap-btn:hover .tap-btn-inner{background:rgba(74,127,212,.15);border-color:rgba(74,127,212,.6);box-shadow:0 0 60px rgba(74,127,212,.2)}
+.tap-btn svg{stroke:var(--ocean-ll);transition:transform .4s}
+.tap-btn:hover svg{transform:translateX(4px)}
+.tap-btn-lbl{font-size:9px;letter-spacing:7px;text-transform:uppercase;color:var(--ocean-ll)}
+
+#count{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;overflow:hidden}
+#count.on{display:flex}
+#count-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 20% 30%,rgba(26,58,110,0.4) 0%,transparent 50%),radial-gradient(ellipse 60% 55% at 80% 70%,rgba(61,42,122,0.35) 0%,transparent 50%),#04080f}
+#ccanvas{position:absolute;inset:0}
+.cdig{position:absolute;font-family:'Forum',serif;font-size:clamp(180px,38vw,320px);opacity:0;pointer-events:none;user-select:none;background:linear-gradient(135deg,#e8eef8,var(--ocean-ll),var(--violet-ll));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cdig.pop{animation:cpop 1.1s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes cpop{0%{opacity:0;transform:scale(.2);filter:blur(50px)}25%{opacity:1;filter:blur(0)}70%{transform:scale(1.08)}100%{opacity:0;transform:scale(1.6);filter:blur(20px)}}
+.count-hint{position:absolute;bottom:14vh;font-family:'Cormorant',serif;font-style:italic;font-size:16px;letter-spacing:8px;background:linear-gradient(90deg,var(--ocean-ll),var(--violet-ll));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:.6}
+
+#site{display:none;opacity:0;transition:opacity 1.4s ease}
+#site.on{opacity:1}
+.site-bg{position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 60% 50% at 0% 0%,rgba(26,58,110,.12) 0%,transparent 50%),radial-gradient(ellipse 55% 45% at 100% 40%,rgba(61,42,122,.1) 0%,transparent 50%),#04080f}
+
+.hdr{padding:160px 48px 120px;text-align:center;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+.hdr::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 70% at 50% 0%,rgba(74,127,212,.08) 0%,transparent 60%);pointer-events:none}
+.hdr-year{font-size:9px;letter-spacing:10px;text-transform:uppercase;color:var(--muted);margin-bottom:24px}
+.hdr-name{font-family:'Forum',serif;font-size:clamp(72px,14vw,140px);line-height:.85;letter-spacing:-2px;margin-bottom:20px;background:linear-gradient(135deg,#e8eef8 0%,var(--ocean-ll) 45%,var(--violet-ll) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hdr-italic{font-family:'Cormorant',serif;font-style:italic;font-weight:300;font-size:clamp(15px,2.2vw,20px);background:linear-gradient(110deg,var(--ocean-ll),var(--violet-ll));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:3px}
+.hdr-sub{margin-top:36px;font-size:9px;letter-spacing:7px;text-transform:uppercase;color:var(--muted)}
+
+.sec{max-width:1200px;margin:0 auto;padding:110px 48px;border-bottom:1px solid var(--line);opacity:0;transform:translateY(36px);transition:opacity 1s ease,transform 1s ease}
+.sec.vis{opacity:1;transform:none}
+@media(max-width:600px){.sec{padding:70px 20px}}
+.sec-hd{display:flex;align-items:center;gap:28px;margin-bottom:80px}
+.sec-hd-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(74,127,212,.2),transparent)}
+.sec-hd-name{font-size:9px;letter-spacing:10px;text-transform:uppercase;color:var(--ocean-ll);white-space:nowrap}
+
+.frames-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:700px){.frames-grid{grid-template-columns:1fr;gap:16px}}
+.frame-wrap{cursor:zoom-in;border-radius:24px;overflow:hidden;background:var(--bg3);position:relative;box-shadow:0 0 0 1px rgba(74,127,212,.15);transition:box-shadow .4s,transform .4s}
+.frame-wrap:hover{box-shadow:0 0 0 1px rgba(74,127,212,.45),0 24px 60px rgba(74,127,212,.1);transform:translateY(-4px)}
+.frame-wrap img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;transition:transform .8s cubic-bezier(.16,1,.3,1);filter:brightness(.92) saturate(.88)}
+.frame-wrap:hover img{transform:scale(1.05);filter:brightness(1) saturate(1)}
+.frame-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(4,8,15,.45) 0%,transparent 50%);pointer-events:none}
+.frame-num{position:absolute;bottom:16px;left:18px;font-family:'Forum',serif;font-size:11px;letter-spacing:6px;color:rgba(255,255,255,.22)}
+.ph{width:100%;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,.06);background:var(--bg3)}
+
+.yarik-text{margin-top:72px;display:grid;grid-template-columns:200px 1fr;gap:64px;align-items:start}
+@media(max-width:600px){.yarik-text{grid-template-columns:1fr;gap:24px}}
+.yarik-text-head{font-family:'Cormorant',serif;font-style:italic;font-weight:300;font-size:36px;line-height:1.2;background:linear-gradient(135deg,var(--ocean-ll),var(--violet-ll));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.yarik-text-body{font-size:14px;line-height:2.2;color:var(--muted);padding-top:6px}
+
+.person{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+@media(max-width:700px){.person{grid-template-columns:1fr;gap:40px}}
+.person.flip{direction:rtl}
+.person.flip>*{direction:ltr}
+.person-text{display:flex;flex-direction:column;justify-content:center;padding-top:8px}
+.person-name{font-family:'Forum',serif;font-size:clamp(44px,6vw,72px);line-height:.85;margin-bottom:28px;background:linear-gradient(135deg,var(--txt),var(--ocean-ll));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.person-rule{width:56px;height:1px;background:linear-gradient(90deg,var(--ocean-l),var(--violet-l));margin-bottom:28px}
+.person-body{font-size:14px;line-height:2.1;color:var(--muted)}
+.person-photos{display:flex;flex-direction:column;gap:12px}
+.photo-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.photo-row.full{grid-template-columns:1fr}
+.pphoto{border-radius:20px;overflow:hidden;background:var(--bg3);position:relative;cursor:zoom-in;box-shadow:0 0 0 1px rgba(74,127,212,.12);transition:box-shadow .4s,transform .4s}
+.pphoto:hover{box-shadow:0 0 0 1px rgba(74,127,212,.4),0 20px 50px rgba(74,127,212,.1);transform:translateY(-3px)}
+.pphoto img{width:100%;height:auto;display:block;transition:transform .7s cubic-bezier(.16,1,.3,1);filter:brightness(.9) saturate(.85)}
+.pphoto:hover img{transform:scale(1.05);filter:brightness(1) saturate(1)}
+
+/* Изменено под вертикальный формат видео 9:16 */
+.video-block{border-radius:20px;overflow:hidden;background:var(--bg3);position:relative;margin-bottom:12px;box-shadow:0 0 0 1px rgba(74,127,212,.12);display:flex;justify-content:center;width:100%;max-width:340px;margin-left:auto;margin-right:auto}
+.video-block video{width:100%;aspect-ratio:9/16;object-fit:cover;display:block;border-radius:20px}
+
+.ftr{text-align:center;padding:130px 48px 160px;position:relative;overflow:hidden}
+.ftr::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 100%,rgba(61,42,122,.12) 0%,transparent 55%);pointer-events:none}
+.ftr-line{width:1px;height:80px;background:linear-gradient(to bottom,transparent,rgba(74,127,212,.3),rgba(123,94,167,.3),transparent);margin:0 auto 80px}
+.ftr-name{font-family:'Forum',serif;font-size:clamp(56px,11vw,110px);line-height:.85;margin-bottom:24px;background:linear-gradient(135deg,#e8eef8 0%,var(--ocean-ll) 40%,var(--violet-ll) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ftr-sub{font-family:'Cormorant',serif;font-style:italic;font-weight:300;font-size:clamp(15px,2vw,20px);background:linear-gradient(110deg,var(--ocean-ll),var(--violet-ll));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:3px;margin-bottom:48px}
+.ftr-names{display:flex;gap:28px;justify-content:center;flex-wrap:wrap}
+.ftr-tag{font-size:9px;letter-spacing:6px;text-transform:uppercase;color:var(--muted)}
+
+#lb{position:fixed;inset:0;z-index:500;background:rgba(4,8,15,.97);backdrop-filter:blur(28px);display:none;align-items:center;justify-content:center;padding:24px;cursor:zoom-out}
+#lb.on{display:flex}
+#lb-img{max-width:100%;max-height:90vh;border-radius:20px;object-fit:contain;box-shadow:0 40px 120px rgba(0,0,0,.8);animation:lbin .35s cubic-bezier(.16,1,.3,1)}
+@keyframes lbin{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:scale(1)}}
+#lb-close{position:absolute;top:24px;right:28px;background:rgba(255,255,255,.06);border:1px solid rgba(74,127,212,.2);border-radius:50px;padding:8px 20px;color:var(--muted);font-size:9px;letter-spacing:5px;text-transform:uppercase;cursor:pointer;transition:all .3s;font-family:'Tenor Sans',sans-serif}
+#lb-close:hover{background:rgba(74,127,212,.15);border-color:var(--ocean-ll);color:var(--ocean-ll)}
+#lb-nav{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;gap:10px;align-items:center}
+.lb-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);cursor:pointer;transition:all .3s}
+.lb-dot.act{background:var(--ocean-ll);width:20px;border-radius:3px}
+#lb-prev,#lb-next{background:rgba(255,255,255,.06);border:1px solid rgba(74,127,212,.2);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;position:absolute;top:50%;transform:translateY(-50%)}
+#lb-prev{left:20px}#lb-next{right:20px}
+#lb-prev:hover,#lb-next:hover{background:rgba(74,127,212,.15);border-color:var(--ocean-ll)}
+#lb-prev svg,#lb-next svg{stroke:var(--ocean-ll)}
+
+@keyframes up{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<div id="lb" onclick="closeLb(event)">
+  <button id="lb-close" onclick="closeLb()">Закрыть ✕</button>
+  <button id="lb-prev" onclick="event.stopPropagation();lbStep(-1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M15 18l-6-6 6-6"/></svg></button>
+  <img id="lb-img" src="" alt="">
+  <button id="lb-next" onclick="event.stopPropagation();lbStep(1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M9 18l6-6-6-6"/></svg></button>
+  <div id="lb-nav"></div>
+</div>
+
+<div id="tap">
+  <div id="tap-bg"></div>
+  <div class="particles" id="particles"></div>
+  <div class="tap-eyebrow">С днём рождения</div>
+  <div class="tap-name">Аня</div>
+  <div class="tap-italic">от тех, кто тебя любит</div>
+  <button class="tap-btn" onclick="startFlow()">
+    <div class="tap-btn-inner">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.3"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      <span class="tap-btn-lbl">Открыть</span>
+    </div>
+  </button>
+</div>
+
+<div id="count">
+  <div id="count-bg"></div>
+  <canvas id="ccanvas"></canvas>
+  <div class="count-hint">Happy Birthday</div>
+  <div class="cdig" id="d3">3</div>
+  <div class="cdig" id="d2">2</div>
+  <div class="cdig" id="d1">1</div>
+</div>
+
+<div id="site">
+  <div class="site-bg"></div>
+
+  <header class="hdr">
+    <div class="hdr-year">2026</div>
+    <div class="hdr-name">Аня</div>
+    <div class="hdr-italic">С днём рождения, любимая</div>
+    <div class="hdr-sub">Happy Birthday!</div>
+  </header>
+
+  <section class="sec" id="s-yarik">
+    <div class="sec-hd">
+      <div class="sec-hd-line"></div>
+      <div class="sec-hd-name">Ярик</div>
+      <div class="sec-hd-line"></div>
+    </div>
+    <div class="frames-grid">
+      <div class="frame-wrap" onclick="openGallery(['photo_nev_1.jpeg','photo_nev_2.jpeg','photo_nev_3.jpeg'],0)">
+        <img src="photo_nev_1.jpeg" alt="" onerror="this.parentNode.innerHTML='<div class=ph>I</div>'">
+        <div class="frame-overlay"></div>
+        <div class="frame-num">01</div>
+      </div>
+      <div class="frame-wrap" onclick="openGallery(['photo_nev_1.jpeg','photo_nev_2.jpeg','photo_nev_3.jpeg'],1)">
+        <img src="photo_nev_2.jpeg" alt="" onerror="this.parentNode.innerHTML='<div class=ph>II</div>'">
+        <div class="frame-overlay"></div>
+        <div class="frame-num">02</div>
+      </div>
+      <div class="frame-wrap" onclick="openGallery(['photo_nev_1.jpeg','photo_nev_2.jpeg','photo_nev_3.jpeg'],2)">
+        <img src="photo_nev_3.jpeg" alt="" onerror="this.parentNode.innerHTML='<div class=ph>III</div>'">
+        <div class="frame-overlay"></div>
+        <div class="frame-num">03</div>
+      </div>
+    </div>
+    <div class="yarik-text">
+      <div class="yarik-text-head">Слова<br>от<br>Ярика</div>
+      <div class="yarik-text-body">С днём рождения, Аня! Пусть этот день будет наполнен радостью, любовью и теплом. Ты — невероятный человек, который приносит свет и счастье в жизни всех, кто тебя окружает. Желаю тебе здоровья, успехов во всех начинаниях и исполнения самых заветных желаний.</div>
+    </div>
+  </section>
+
+  <section class="sec" id="s-masha">
+    <div class="sec-hd">
+      <div class="sec-hd-line"></div>
+      <div class="sec-hd-name">Маша</div>
+      <div class="sec-hd-line"></div>
+    </div>
+    <div class="person">
+      <div class="person-text">
+        <div class="person-name">Маша</div>
+        <div class="person-rule"></div>
+        <div class="person-body">Анюта, поздравляю тебя с Днем Рождения!!!🥳💗Желаю тебе всего самого, самого наилучшего! Ты очень классный человек который наполняет меня радостью каждый день! Я тебя очень люблю и хочу что б у тебя все было хорошо! У тебя все получится, главное не сдаваться!С днем рождения!🥰❤️</div>
+      </div>
+      <div class="person-photos">
+        <div class="video-block">
+          <video controls playsinline preload="metadata">
+            <source src="masha_video.mov" type="video/quicktime">
+          </video>
+        </div>
+        <div class="photo-row">
+          <div class="pphoto" onclick="openGallery(['masha_1.jpeg','masha_2.jpeg','masha_3.jpeg'],0)"><img src="masha_1.jpeg" alt="" onerror="this.parentNode.innerHTML='<div class=ph>Photo</div>'"></div>
+          <div class="pphoto" onclick="openGallery(['masha_1.jpeg','masha_2.jpeg','masha_3.jpeg'],1)"><img src="masha_2.jpeg" alt="" onerror="this.parentNode.innerHTML='<div class=ph>Photo</div>'"></div>
+        </div>
+        <div class="photo-row full">
+          <div class="pphoto" onclick="openGallery(['masha_1.jpeg','masha_2.jpeg','masha_3.jpeg'],2)"><img src="masha_3.jpeg" alt="" onerror="this.parentNode.innerHTML='<div class=ph>Photo</div>'"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="s-sonya">
+    <div class="sec-hd">
+      <div class="sec-hd-line"></div>
+      <div class="sec-hd-name">Соня</div>
+      <div class="sec-hd-line"></div>
+    </div>
+    <div class="person flip">
+      <div class="person-text">
+        <div class="person-name">Соня</div>
+        <div class="person-rule"></div>
+        <div class="person-body">Анічка вітаю тебе з днем народження 🎉 нехай всі мрії здійснюються, люблю тебе ❤️</div>
+      </div>
+      <div class="person-photos">
+        <div class="photo-row">
+          <div class="pphoto" onclick="openGallery(['sonya_1.jpeg','sonya_2.jpeg','sonya_3.jpeg'],0)"><img src="sonya_1.jpeg" alt="" onerror="this.parentNode.innerHTML='<div class=ph>Photo</div>'"></div>
+          <div class="pphoto" onclick="openGallery(['sonya_1.jpeg','sonya_2.jpeg','sonya_3.jpeg'],1)"><img src="sonya_2.jpeg" alt="" onerror="this.parentNode.innerHTML='<div class=ph>Photo</div>'"></div>
+        </div>
+        <div class="photo-row full">
+          <div class="pphoto" onclick="openGallery(['sonya_1.jpeg','sonya_2.jpeg','sonya_3.jpeg'],2)"><img src="sonya_3.jpeg" alt="" onerror="this.parentNode.innerHTML='<div class=ph>Photo</div>'"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="s-anya2">
+    <div class="sec-hd">
+      <div class="sec-hd-line"></div>
+      <div class="sec-hd-name">Аня</div>
+      <div class="sec-hd-line"></div>
+    </div>
+    <div class="person">
+      <div class="person-text">
+        <div class="person-name">Аня</div>
+        <div class="person-rule"></div>
+        <div class="person-body">Дорога Анютка, з днем народження!!🥳🎂
+Я вітаю тебе і бажаю всього най найкращого! Ти сонечко яке світись завжди і має характер що теж грає роль хахаха. Зараз нас розділяють кілометри і океан, проте я хочу щоб ти памʼятала що я всеодно близько. Я сумую, люблю і хочу побачиться❤️❤️ 
+Я вірю ти все зможеш! А ще я знаю що ти все зможеш через Ісуса Христа який підкріплює тебе (филлипянам 4:13) ти вже пройшла великий шлях до своєї мети, тому залишилось ще трошки і я знаю що ти зможеш!!! Продовжуй підніматись крок за кроком вперед! Я дуже хочу тебе зустріти вже скоро десь в Miami or Los Angeles 
+Або раніше на вуличках Києву. Я люблю тебе і нехочу щоб мозок стирав спогади з тобою🫶🏽 
+Люблю тебе❤️❤️ 
+
+Happy Birthday Dancing Queen 💃🏻👸</div>
+      </div>
+      <div class="person-photos">
+        <div class="photo-row">
+          <div class="pphoto" onclick="openGallery(['anya2_1.jpeg','anya2_2.jpeg','anya2_3.jpeg'],0)"><img src="anya2_1.jpeg" alt="" onerror="this.parentNode.innerHTML='<div class=ph>Photo</div>'"></div>
+          <div class="pphoto" onclick="openGallery(['anya2_1.jpeg','anya2_2.jpeg','anya2_3.jpeg'],1)"><img src="anya2_2.jpeg" alt="" onerror="this.parentNode.innerHTML='<div class=ph>Photo</div>'"></div>
+        </div>
+        <div class="photo-row full">
+          <div class="pphoto" onclick="openGallery(['anya2_1.jpeg','anya2_2.jpeg','anya2_3.jpeg'],2)"><img src="anya2_1.jpeg" alt="" onerror="this.parentNode.innerHTML='<div class=ph>Photo</div>'"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="ftr">
+    <div class="ftr-line"></div>
+    <div class="ftr-name">Happy Birthday</div>
+    <div class="ftr-sub">Любимой Ане — с теплом и любовью</div>
+    <div class="ftr-names">
+      <span class="ftr-tag">Ярик</span><span class="ftr-tag">·</span>
+      <span class="ftr-tag">Маша</span><span class="ftr-tag">·</span>
+      <span class="ftr-tag">Соня</span><span class="ftr-tag">·</span>
+      <span class="ftr-tag">Аня</span>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  const p=document.getElementById('particles');
+  const colors=['rgba(74,127,212,','rgba(61,42,122,','rgba(122,170,232,','rgba(179,157,219,'];
+  for(let i=0;i<40;i++){
+    const d=document.createElement('div');d.className='particle';
+    const sz=Math.random()*4+1;
+    const c=colors[Math.floor(Math.random()*colors.length)];
+    d.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;background:${c}${(Math.random()*.8+.2).toFixed(2)});animation-duration:${Math.random()*15+8}s;animation-delay:${Math.random()*10}s`;
+    p.appendChild(d);
+  }
+})();
+
+function startFlow(){
+  document.getElementById('tap').classList.add('out');
+  setTimeout(()=>{
+    document.getElementById('tap').style.display='none';
+    document.getElementById('count').classList.add('on');
+    initCanvas();runCount();
+  },2000);
+}
+function runCount(){
+  const seq=[3,2,1];let i=0;
+  function next(){
+    if(i>=seq.length){
+      setTimeout(()=>{
+        document.getElementById('count').classList.remove('on');
+        const s=document.getElementById('site');
+        s.style.display='block';
+        requestAnimationFrame(()=>{s.classList.add('on');initScroll();});
+      },500);return;
+    }
+    const el=document.getElementById('d'+seq[i]);
+    el.classList.add('pop');
+    el.addEventListener('animationend',()=>{el.classList.remove('pop');i++;setTimeout(next,100);},{once:true});
+  }
+  setTimeout(next,300);
+}
+function initCanvas(){
+  const c=document.getElementById('ccanvas');
+  const ctx=c.getContext('2d');
+  c.width=window.innerWidth;c.height=window.innerHeight;
+  const cols=Math.floor(c.width/20);
+  const drops=Array(cols).fill(1);
+  const chars='アカサタナハマヤ01アイウエオ'.split('');
+  const colors=['#2a5298','#4a7fd4','#7b5ea7','#7aaae8','#3d2a7a'];
+  const iv=setInterval(()=>{
+    ctx.fillStyle='rgba(4,8,15,.13)';ctx.fillRect(0,0,c.width,c.height);
+    ctx.font='15px monospace';
+    for(let i=0;i<drops.length;i++){
+      ctx.fillStyle=colors[i%colors.length];ctx.globalAlpha=.4+Math.random()*.6;
+      ctx.fillText(chars[Math.floor(Math.random()*chars.length)],i*20,drops[i]*20);
+      if(drops[i]*20>c.height&&Math.random()>.97)drops[i]=0;
+      drops[i]++;
+    }
+    ctx.globalAlpha=1;
+  },40);
+  setTimeout(()=>clearInterval(iv),4500);
+}
+function initScroll(){
+  const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis');}),{threshold:.05});
+  document.querySelectorAll('.sec').forEach(s=>obs.observe(s));
+}
+
+let curGallery=[],curIdx=0;
+function openGallery(imgs,idx){
+  curGallery=imgs;curIdx=idx;
+  renderLb();
+  document.getElementById('lb').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+function renderLb(){
+  const img=document.getElementById('lb-img');
+  img.src=curGallery[curIdx];
+  img.style.animation='none';
+  requestAnimationFrame(()=>{img.style.animation='lbin .3s cubic-bezier(.16,1,.3,1)'});
+  const nav=document.getElementById('lb-nav');
+  nav.innerHTML='';
+  curGallery.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='lb-dot'+(i===curIdx?' act':'');
+    d.onclick=e=>{e.stopPropagation();curIdx=i;renderLb();};
+    nav.appendChild(d);
+  });
+}
+function lbStep(dir){
+  curIdx=(curIdx+dir+curGallery.length)%curGallery.length;
+  renderLb();
+}
+function closeLb(e){
+  if(e&&e.target!==document.getElementById('lb')&&e.target!==document.getElementById('lb-close'))return;
+  document.getElementById('lb').classList.remove('on');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape')closeLb({target:document.getElementById('lb')});
+  if(e.key==='ArrowRight')lbStep(1);
+  if(e.key==='ArrowLeft')lbStep(-1);
+});
+</script>
+</body>
+</html>
