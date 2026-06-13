@@ -61,47 +61,48 @@ body{
 .hdr-italic{font-family:'Cormorant',serif;font-style:italic;font-weight:300;font-size:clamp(15px,2.2vw,20px);background:linear-gradient(110deg,var(--ocean-ll),var(--violet-ll));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:3px}
 .hdr-sub{margin-top:36px;font-size:9px;letter-spacing:7px;text-transform:uppercase;color:var(--muted)}
 
-.sec{max-width:1200px;margin:0 auto;padding:110px 48px;border-bottom:1px solid var(--line);opacity:0;transform:translateY(36px);transition:opacity 1s ease,transform 1s ease}
+.sec{max-width:1200px;margin:40px auto;padding:60px 48px;background:rgba(13,21,38,0.3);border:1px solid rgba(74,127,212,0.15);border-radius:32px;box-shadow:0 20px 50px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);opacity:0;transform:translateY(36px);transition:opacity 1s ease,transform 1s ease}
 .sec.vis{opacity:1;transform:none}
-@media(max-width:600px){.sec{padding:70px 20px}}
-.sec-hd{display:flex;align-items:center;gap:28px;margin-bottom:80px}
+@media(max-width:600px){.sec{padding:40px 20px;margin:20px 12px;border-radius:24px}}
+.sec-hd{display:flex;align-items:center;gap:28px;margin-bottom:60px}
 .sec-hd-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(74,127,212,.2),transparent)}
 .sec-hd-name{font-size:9px;letter-spacing:10px;text-transform:uppercase;color:var(--ocean-ll);white-space:nowrap}
 
 .frames-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 @media(max-width:700px){.frames-grid{grid-template-columns:1fr;gap:16px}}
-.frame-wrap{cursor:zoom-in;border-radius:24px;overflow:hidden;background:var(--bg3);position:relative;box-shadow:0 0 0 1px rgba(74,127,212,.15);transition:box-shadow .4s,transform .4s}
-.frame-wrap:hover{box-shadow:0 0 0 1px rgba(74,127,212,.45),0 24px 60px rgba(74,127,212,.1);transform:translateY(-4px)}
-.frame-wrap img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;transition:transform .8s cubic-bezier(.16,1,.3,1);filter:brightness(.92) saturate(.88)}
+
+/* Квадратные аккуратные рамки для Ярика, заполняющие всё до краёв */
+.frame-wrap{cursor:zoom-in;border-radius:24px;overflow:hidden;background:var(--bg3);position:relative;border:1px solid rgba(74,127,212,0.25);box-shadow:0 8px 24px rgba(0,0,0,0.2);transition:border-color .4s,box-shadow .4s,transform .4s}
+.frame-wrap:hover{border-color:rgba(122,170,232,0.7);box-shadow:0 0 30px rgba(74,127,212,0.35), 0 20px 50px rgba(0,0,0,0.5);transform:translateY(-6px)}
+.frame-wrap img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;transition:transform .8s cubic-bezier(.16,1,.3,1);filter:brightness(.92) saturate(.88)}
 .frame-wrap:hover img{transform:scale(1.05);filter:brightness(1) saturate(1)}
 .frame-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(4,8,15,.45) 0%,transparent 50%);pointer-events:none}
-.frame-num{position:absolute;bottom:16px;left:18px;font-family:'Forum',serif;font-size:11px;letter-spacing:6px;color:rgba(255,255,255,.22)}
-.ph{width:100%;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,.06);background:var(--bg3)}
+.frame-num{position:absolute;bottom:16px;left:18px;font-family:'Forum',serif;font-size:11px;letter-spacing:6px;color:rgba(255,255,255,.4)}
+.ph{width:100%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:9px;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,.06);background:var(--bg3)}
 
-.yarik-text{margin-top:72px;display:grid;grid-template-columns:200px 1fr;gap:64px;align-items:start}
+.yarik-text{margin-top:60px;display:grid;grid-template-columns:200px 1fr;gap:64px;align-items:start}
 @media(max-width:600px){.yarik-text{grid-template-columns:1fr;gap:24px}}
 .yarik-text-head{font-family:'Cormorant',serif;font-style:italic;font-weight:300;font-size:36px;line-height:1.2;background:linear-gradient(135deg,var(--ocean-ll),var(--violet-ll));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .yarik-text-body{font-size:14px;line-height:2.2;color:var(--muted);padding-top:6px}
 
-.person{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.person{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
 @media(max-width:700px){.person{grid-template-columns:1fr;gap:40px}}
 .person.flip{direction:rtl}
 .person.flip>*{direction:ltr}
-.person-text{display:flex;flex-direction:column;justify-content:center;padding-top:8px}
+.person-text{display:flex;flex-direction:column;justify-content:center}
 .person-name{font-family:'Forum',serif;font-size:clamp(44px,6vw,72px);line-height:.85;margin-bottom:28px;background:linear-gradient(135deg,var(--txt),var(--ocean-ll));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .person-rule{width:56px;height:1px;background:linear-gradient(90deg,var(--ocean-l),var(--violet-l));margin-bottom:28px}
 .person-body{font-size:14px;line-height:2.1;color:var(--muted)}
-.person-photos{display:flex;flex-direction:column;gap:12px}
-.photo-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.person-photos{display:flex;flex-direction:column;gap:16px}
+.photo-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .photo-row.full{grid-template-columns:1fr}
-.pphoto{border-radius:20px;overflow:hidden;background:var(--bg3);position:relative;cursor:zoom-in;box-shadow:0 0 0 1px rgba(74,127,212,.12);transition:box-shadow .4s,transform .4s}
-.pphoto:hover{box-shadow:0 0 0 1px rgba(74,127,212,.4),0 20px 50px rgba(74,127,212,.1);transform:translateY(-3px)}
-.pphoto img{width:100%;height:auto;display:block;transition:transform .7s cubic-bezier(.16,1,.3,1);filter:brightness(.9) saturate(.85)}
-.pphoto:hover img{transform:scale(1.05);filter:brightness(1) saturate(1)}
 
-/* Изменено под вертикальный формат видео 9:16 */
-.video-block{border-radius:20px;overflow:hidden;background:var(--bg3);position:relative;margin-bottom:12px;box-shadow:0 0 0 1px rgba(74,127,212,.12);display:flex;justify-content:center;width:100%;max-width:340px;margin-left:auto;margin-right:auto}
-.video-block video{width:100%;aspect-ratio:9/16;object-fit:cover;display:block;border-radius:20px}
+/* Рамки для девочек, заполняющие всё пространство без чёрных полей */
+.pphoto{border-radius:24px;overflow:hidden;background:var(--bg3);position:relative;cursor:zoom-in;border:1px solid rgba(74,127,212,0.2);box-shadow:0 8px 24px rgba(0,0,0,0.2);transition:border-color .4s,box-shadow .4s,transform .4s}
+.pphoto:hover{border-color:rgba(122,170,232,0.6);box-shadow:0 0 25px rgba(74,127,212,0.25), 0 15px 40px rgba(0,0,0,0.45);transform:translateY(-5px)}
+.pphoto img{width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;display:block;transition:transform .7s cubic-bezier(.16,1,.3,1);filter:brightness(.9) saturate(.85)}
+.pphoto:hover img{transform:scale(1.05);filter:brightness(1) saturate(1)}
+.photo-row.full .pphoto img {aspect-ratio:16/10}
 
 .ftr{text-align:center;padding:130px 48px 160px;position:relative;overflow:hidden}
 .ftr::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 100%,rgba(61,42,122,.12) 0%,transparent 55%);pointer-events:none}
@@ -213,11 +214,6 @@ body{
         <div class="person-body">Анюта, поздравляю тебя с Днем Рождения!!!🥳💗Желаю тебе всего самого, самого наилучшего! Ты очень классный человек который наполняет меня радостью каждый день! Я тебя очень люблю и хочу что б у тебя все было хорошо! У тебя все получится, главное не сдаваться!С днем рождения!🥰❤️</div>
       </div>
       <div class="person-photos">
-        <div class="video-block">
-          <video controls playsinline preload="metadata">
-            <source src="masha_video.mov" type="video/quicktime">
-          </video>
-        </div>
         <div class="photo-row">
           <div class="pphoto" onclick="openGallery(['masha_1.jpeg','masha_2.jpeg','masha_3.jpeg'],0)"><img src="masha_1.jpeg" alt="" onerror="this.parentNode.innerHTML='<div class=ph>Photo</div>'"></div>
           <div class="pphoto" onclick="openGallery(['masha_1.jpeg','masha_2.jpeg','masha_3.jpeg'],1)"><img src="masha_2.jpeg" alt="" onerror="this.parentNode.innerHTML='<div class=ph>Photo</div>'"></div>
@@ -266,8 +262,8 @@ body{
         <div class="person-body">Дорога Анютка, з днем народження!!🥳🎂
 Я вітаю тебе і бажаю всього най найкращого! Ти сонечко яке світись завжди і має характер що теж грає роль хахаха. Зараз нас розділяють кілометри і океан, проте я хочу щоб ти памʼятала що я всеодно близько. Я сумую, люблю і хочу побачиться❤️❤️ 
 Я вірю ти все зможеш! А ще я знаю що ти все зможеш через Ісуса Христа який підкріплює тебе (филлипянам 4:13) ти вже пройшла великий шлях до своєї мети, тому залишилось ще трошки і я знаю що ти зможеш!!! Продовжуй підніматись крок за кроком вперед! Я дуже хочу тебе зустріти вже скоро десь в Miami or Los Angeles 
-Або раніше на вуличках Києву. Я люблю тебе і нехочу щоб мозок стирав спогади з тобою🫶🏽 
-Люблю тебе❤️❤️ 
+Або раніше на вуличках Києву. Я люблю тебе и нехочу чтобы мозг стирал воспоминания с тобой🫶🏽 
+Люблю тебя❤️❤️ 
 
 Happy Birthday Dancing Queen 💃🏻👸</div>
       </div>
@@ -277,7 +273,7 @@ Happy Birthday Dancing Queen 💃🏻👸</div>
           <div class="pphoto" onclick="openGallery(['anya2_1.jpeg','anya2_2.jpeg','anya2_3.jpeg'],1)"><img src="anya2_2.jpeg" alt="" onerror="this.parentNode.innerHTML='<div class=ph>Photo</div>'"></div>
         </div>
         <div class="photo-row full">
-          <div class="pphoto" onclick="openGallery(['anya2_1.jpeg','anya2_2.jpeg','anya2_3.jpeg'],2)"><img src="anya2_1.jpeg" alt="" onerror="this.parentNode.innerHTML='<div class=ph>Photo</div>'"></div>
+          <div class="pphoto" onclick="openGallery(['anya2_1.jpeg','anya2_2.jpeg','anya2_3.jpeg'],2)"><img src="anya2_3.jpeg" alt="" onerror="this.parentNode.innerHTML='<div class=ph>Photo</div>'"></div>
         </div>
       </div>
     </div>
